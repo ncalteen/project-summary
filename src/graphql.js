@@ -1,15 +1,11 @@
+const queries = require('./queries.js')
+
 /**
  * Get the currently authenticated user.
  */
 async function getAuthenticatedUser(octokit) {
   let response = await octokit.graphql({
-    query: `
-      query {
-        viewer {
-          login
-        }
-      }
-    `
+    query: queries.AUTHENTICATED_USER
   })
 
   return response.viewer.login
@@ -38,15 +34,7 @@ async function getProjectNodeId(octokit, organization, projectNumber) {
   projectNumber = parseInt(projectNumber)
 
   response = await octokit.graphql({
-    query: `
-          query ($organization: String!, $projectNumber: Int!) {
-            organization(login: $organization) {
-              projectV2(number: $projectNumber) {
-                id
-              }
-            }
-          }
-        `,
+    query: queries.PROJECT_NODE_ID,
     organization,
     projectNumber
   })
@@ -63,15 +51,7 @@ async function getRepositoryNodeId(octokit, organization, repository) {
   let response
 
   response = await octokit.graphql({
-    query: `
-      query ($organization: String!, $repository: String!) {
-        organization(login: $organization) {
-          repository(name: $repository) {
-            id
-          }
-        }
-      }
-    `,
+    query: queries.REPOSITORY_NODE_ID,
     organization,
     repository
   })

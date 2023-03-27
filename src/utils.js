@@ -2,6 +2,8 @@ const fs = require('fs')
 const graphql = require('./graphql.js')
 const github = require('@actions/github')
 const mustache = require('mustache')
+const mutations = require('./mutations.js')
+const queries = require('./queries.js')
 
 /**
  * Get the contributions for the user.
@@ -11,75 +13,6 @@ const mustache = require('mustache')
  * @returns Object with the total contribution stats.
  */
 async function getContributions(tokens, startDate) {
-  let query = `
-    query ($username: String!, $startDate: DateTime!) {
-      user(login: $username) {
-        contributionsCollection(from: $startDate) {
-          totalCommitContributions
-          totalRepositoriesWithContributedCommits
-          totalIssueContributions
-          totalRepositoriesWithContributedIssues
-          totalPullRequestContributions
-          totalRepositoriesWithContributedPullRequests
-          totalPullRequestReviewContributions
-          totalRepositoriesWithContributedPullRequestReviews
-          issueContributionsByRepository {
-            repository {
-              nameWithOwner
-              url
-            }
-            contributions(first: 100) {
-              totalCount
-              nodes {
-                issue {
-                  title
-                  url
-                  createdAt
-                  state
-                }
-              }
-            }
-          }
-          pullRequestContributionsByRepository {
-            repository {
-              nameWithOwner
-              url
-            }
-            contributions(first: 100) {
-              totalCount
-              nodes {
-                pullRequest {
-                  title
-                  url
-                  createdAt
-                  changedFiles
-                  state
-                }
-              }
-            }
-          }
-          pullRequestReviewContributionsByRepository {
-            repository {
-              nameWithOwner
-              url
-            }
-            contributions(first: 100) {
-              totalCount
-              nodes {
-                pullRequest {
-                  title
-                  url
-                  createdAt
-                  state
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  `
-
   let promises = tokens.map(async token => {
     // Create the Octokit client
     let octokit = github.getOctokit(token)
@@ -89,7 +22,7 @@ async function getContributions(tokens, startDate) {
 
     // Get contributions for this user
     let c = await octokit.graphql({
-      query,
+      query: queries.CONTRIBUTIONS,
       username,
       startDate
     })
@@ -351,45 +284,18 @@ async function createIssue(
     projectId = values[1]
     repositoryId = values[2]
 
-    let query = `
-      mutation ($userId: ID!, $repositoryId: ID!, $body: String!, $title: String!) {
-        createIssue(input: {
-          assigneeIds: [$userId],
-          body: $body,
-          repositoryId: $repositoryId,
-          title: $title
-        }) {
-          issue {
-            id
-          }
-        }
-      }
-    `
-
     let response = await octokit.graphql({
-      query,
+      query: mutations.CREATE_ISSUE,
       userId,
       repositoryId,
       body,
       title
     })
 
-    let issueId = response.createIssue.issue.id
-
-    query = `
-      mutation ($projectId: ID!, $issueId: ID!) {
-        addProjectV2ItemById(input: {projectId: $projectId, contentId: $issueId}) {
-          item {
-            id
-          }
-        }
-      }
-    `
-
     octokit.graphql({
-      query,
+      query: mutations.ADD_ISSUE_TO_PROJECT,
       projectId,
-      issueId
+      issueId: response.createIssue.issue.id
     })
   })
 }
