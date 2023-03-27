@@ -1,0 +1,31 @@
+name: 'Personal Task Summary'
+description: 'Generates a summary of work I have been doing.'
+branding:
+  icon: book
+  color: blue
+
+inputs:
+  token:
+    description: 'The GitHub token for authentication.'
+    required: true
+  emuTokens:
+    description: 'A comma-separated list of GitHub tokens for authentication.'
+    required: true
+  numberOfDays:
+    description: 'The number of days to look back.'
+    required: true
+    default: '14'
+  organization:
+    description: 'The organization to create the summary issue in.'
+    required: true
+  repository:
+    description: 'The repository to create the summary issue in.'
+    required: true
+  projectNumber:
+    description: 'The project to create the summary issue in.'
+    required: true
+    default: '1'
+
+runs:
+  using: 'node16'
+  main: 'src/index.js'
