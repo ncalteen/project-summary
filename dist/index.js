@@ -10521,6 +10521,13 @@ async function run() {
     tokens = tokens.concat(emuTokens)
   }
 
+  core.info('Running with the following configuration:')
+  core.info(`numberOfDays: ${numberOfDays}`)
+  core.info(`organization: ${organization}`)
+  core.info(`repository: ${repository}`)
+  core.info(`projectNumber: ${projectNumber}`)
+  core.info(`startDate: ${startDate}`)
+
   // Set up the base stats object
   let totalStats = {
     totalCommitContributions: 0,
@@ -10540,9 +10547,15 @@ async function run() {
   // This is an array of promises
   let responses = await utils.getContributions(tokens, startDate)
 
+  core.info('------------------------------------')
+
   Promise.all(responses).then(async values => {
     values.forEach(c => {
       c = c.user.contributionsCollection
+
+      core.info('Outputting contributions for token:')
+      core.info(c)
+      core.info('------------------------------------')
 
       // Merge contributions from this GitHub tenant
       totalStats.totalCommitContributions += c.totalCommitContributions
@@ -10583,6 +10596,8 @@ async function run() {
     // Populate the main template with the generated markdown
     let template = fs.readFileSync('./templates/template.md', 'utf8').toString()
 
+    core.info('Generated markdown for the summary issue')
+
     // Get the GitHub.com tenant client and username
     // This is for creating the summary issue
     let octokit = github.getOctokit(githubToken)
@@ -10611,8 +10626,10 @@ async function run() {
       repositoryPullRequestReviews: repoPullRequestReviews
     })
 
+    core.info(`Creating summary issue for ${username}`)
+
     // Write the output to a new issue and assign to the project
-    utils.createIssue(
+    let createIssueResponse = await utils.createIssue(
       octokit,
       organization,
       repository,
@@ -10620,6 +10637,8 @@ async function run() {
       projectNumber,
       output
     )
+
+    core.info(createIssueResponse)
   })
 }
 
