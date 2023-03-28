@@ -69,10 +69,10 @@ jobs:
       - name: Build report for @ncalteen
         uses: ncalteen/project-summary@v0.1
         with:
-          token: '${{ secrets.GITHUB_TOKEN_1 }},${{ secrets.GITHUB_TOKEN_2 }}'
-          username: ncalteen
-          numberOfDays: 14
+          token: ${{ secrets.GITHUB_TOKEN }}
+          emuTokens: '${{ secrets.TOKEN_1 }},${{ secrets.TOKEN_2 }}'
+          numberOfDays: '14'
           organization: ncalteen-github
           repository: todo
-          projectNumber: 1
+          projectNumber: '1'
 ```
