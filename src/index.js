@@ -20,9 +20,10 @@ async function run() {
       : process.env.EMU_TOKENS.split(',')
 
   // Number of days back to query
-  const numberOfDays = parseInt(core.getInput('numberOfDays'))
-    ? core.getInput('numberOfDays') !== ''
-    : 14
+  const numberOfDays =
+    core.getInput('numberOfDays') !== ''
+      ? parseInt(core.getInput('numberOfDays'))
+      : 14
 
   // Organization to create the summary issue in
   const organization =
