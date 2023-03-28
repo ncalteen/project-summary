@@ -1,9 +1,10 @@
 const core = require('@actions/core')
-const fs = require('fs')
 const github = require('@actions/github')
-const graphql = require('./graphql.js')
 const mustache = require('mustache')
+
+const graphql = require('./graphql.js')
 const utils = require('./utils.js')
+const templates = require('./templates.js')
 
 async function run() {
   // The GitHub.com token
@@ -124,9 +125,6 @@ async function run() {
     let repoPullRequestReviews =
       utils.generateRepoPullRequestReviews(totalStats)
 
-    // Populate the main template with the generated markdown
-    let template = fs.readFileSync('./templates/template.md', 'utf8').toString()
-
     core.info('Generated markdown for the summary issue')
 
     // Get the GitHub.com tenant client and username
@@ -135,7 +133,7 @@ async function run() {
     let username = await graphql.getAuthenticatedUser(octokit)
 
     // Render the final markdown file
-    let output = mustache.render(template, {
+    let output = mustache.render(templates.base, {
       username: username,
       start_date: startDate.toISOString().substring(0, 10),
       end_date: new Date().toISOString().substring(0, 10),

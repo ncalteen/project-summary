@@ -1,1 +1,0 @@
-| [{{{nameWithOwner}}}]({{{repoUrl}}}) | {{{createdAt}}} | [{{{title}}}]({{{url}}}) | {{{changedFiles}}} | {{{state}}} |

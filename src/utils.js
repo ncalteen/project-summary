@@ -1,9 +1,10 @@
-const fs = require('fs')
-const graphql = require('./graphql.js')
 const github = require('@actions/github')
 const mustache = require('mustache')
+
+const graphql = require('./graphql.js')
 const mutations = require('./mutations.js')
 const queries = require('./queries.js')
+const templates = require('./templates.js')
 
 /**
  * Get the contributions for the user.
@@ -95,16 +96,12 @@ function generateRepoSummary(c) {
     })
   }
 
-  let rowTemplate = fs
-    .readFileSync('./templates/repositorySummaryRows.md', 'utf8')
-    .toString()
-
   let rows = []
   let key
   let value
   for ([key, value] of Object.entries(repoSummary)) {
     rows.push(
-      mustache.render(rowTemplate, {
+      mustache.render(templates.repositorySummaryRows, {
         nameWithOwner: key,
         url: value.url,
         issuesCreated: value.issues,
@@ -114,11 +111,7 @@ function generateRepoSummary(c) {
     )
   }
 
-  let template = fs
-    .readFileSync('./templates/repositorySummary.md', 'utf8')
-    .toString()
-
-  return mustache.render(template, {
+  return mustache.render(templates.repositorySummary, {
     repositorySummaryRows: rows.join('\n')
   })
 }
@@ -136,16 +129,12 @@ function generateRepoIssues(c) {
     return ''
   }
 
-  let rowTemplate = fs
-    .readFileSync('./templates/repositoryIssuesRows.md', 'utf8')
-    .toString()
-
   // Populate the rows with the data
   let rows = []
   c.issueContributionsByRepository.forEach(element => {
     element.contributions.nodes.forEach(node => {
       rows.push(
-        mustache.render(rowTemplate, {
+        mustache.render(templates.repositoryIssuesRows, {
           nameWithOwner: element.repository.nameWithOwner,
           repoUrl: element.repository.url,
           createdAt: node.issue.createdAt.substring(0, 10),
@@ -157,11 +146,7 @@ function generateRepoIssues(c) {
     })
   })
 
-  let template = fs
-    .readFileSync('./templates/repositoryIssues.md', 'utf8')
-    .toString()
-
-  return mustache.render(template, {
+  return mustache.render(templates.repositoryIssues, {
     repositoryIssuesRows: rows.join('\n')
   })
 }
@@ -179,17 +164,12 @@ function generateRepoPullRequests(c) {
     return ''
   }
 
-  // Get the template file
-  let rowTemplate = fs
-    .readFileSync('./templates/repositoryPullRequestsRows.md', 'utf8')
-    .toString()
-
   // Populate the rows with the data
   let rows = []
   c.pullRequestContributionsByRepository.forEach(element => {
     element.contributions.nodes.forEach(node => {
       rows.push(
-        mustache.render(rowTemplate, {
+        mustache.render(templates.repositoryPullRequestsRows, {
           nameWithOwner: element.repository.nameWithOwner,
           repoUrl: element.repository.url,
           createdAt: node.pullRequest.createdAt.substring(0, 10),
@@ -202,11 +182,7 @@ function generateRepoPullRequests(c) {
     })
   })
 
-  let template = fs
-    .readFileSync('./templates/repositoryPullRequests.md', 'utf8')
-    .toString()
-
-  return mustache.render(template, {
+  return mustache.render(templates.repositoryPullRequests, {
     repositoryPullRequestsRows: rows.join('\n')
   })
 }
@@ -224,16 +200,12 @@ function generateRepoPullRequestReviews(c) {
     return ''
   }
 
-  let rowTemplate = fs
-    .readFileSync('./templates/repositoryPullRequestReviewsRows.md', 'utf8')
-    .toString()
-
   // Populate the rows with the data
   let rows = []
   c.pullRequestReviewContributionsByRepository.forEach(element => {
     element.contributions.nodes.forEach(node => {
       rows.push(
-        mustache.render(rowTemplate, {
+        mustache.render(templates.repositoryPullRequestReviewsRows, {
           nameWithOwner: element.repository.nameWithOwner,
           repoUrl: element.repository.url,
           createdAt: node.pullRequest.createdAt.substring(0, 10),
@@ -245,11 +217,7 @@ function generateRepoPullRequestReviews(c) {
     })
   })
 
-  let template = fs
-    .readFileSync('./templates/repositoryPullRequestReviews.md', 'utf8')
-    .toString()
-
-  return mustache.render(template, {
+  return mustache.render(templates.repositoryPullRequestReviews, {
     repositoryPullRequestReviewsRows: rows.join('\n')
   })
 }
