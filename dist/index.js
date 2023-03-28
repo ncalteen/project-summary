@@ -11243,7 +11243,7 @@ async function run() {
       c = c.user.contributionsCollection
 
       core.info('Outputting contributions for token:')
-      core.info(c)
+      core.info(JSON.stringify(c))
       core.info('------------------------------------')
 
       // Merge contributions from this GitHub tenant
