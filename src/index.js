@@ -126,10 +126,7 @@ async function run() {
 
     // Populate the main template with the generated markdown
     let template = fs
-      .readFileSync(
-        `${process.env.GITHUB_WORKSPACE}/templates/template.md`,
-        'utf8'
-      )
+      .readFileSync(`../templates/template.md`, 'utf8')
       .toString()
 
     core.info('Generated markdown for the summary issue')
