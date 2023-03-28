@@ -10717,7 +10717,7 @@ function generateRepoSummary(c) {
   }
 
   let rowTemplate = fs
-    .readFileSync(`../templates/repositorySummaryRows.md`, 'utf8')
+    .readFileSync('./templates/repositorySummaryRows.md', 'utf8')
     .toString()
 
   let rows = []
@@ -10736,7 +10736,7 @@ function generateRepoSummary(c) {
   }
 
   let template = fs
-    .readFileSync(`../templates/repositorySummary.md`, 'utf8')
+    .readFileSync('./templates/repositorySummary.md', 'utf8')
     .toString()
 
   return mustache.render(template, {
@@ -10758,7 +10758,7 @@ function generateRepoIssues(c) {
   }
 
   let rowTemplate = fs
-    .readFileSync(`../templates/repositoryIssuesRows.md`, 'utf8')
+    .readFileSync('./templates/repositoryIssuesRows.md', 'utf8')
     .toString()
 
   // Populate the rows with the data
@@ -10779,7 +10779,7 @@ function generateRepoIssues(c) {
   })
 
   let template = fs
-    .readFileSync(`../templates/repositoryIssues.md`, 'utf8')
+    .readFileSync('./templates/repositoryIssues.md', 'utf8')
     .toString()
 
   return mustache.render(template, {
@@ -10802,7 +10802,7 @@ function generateRepoPullRequests(c) {
 
   // Get the template file
   let rowTemplate = fs
-    .readFileSync(`../templates/repositoryPullRequestsRows.md`, 'utf8')
+    .readFileSync('./templates/repositoryPullRequestsRows.md', 'utf8')
     .toString()
 
   // Populate the rows with the data
@@ -10824,7 +10824,7 @@ function generateRepoPullRequests(c) {
   })
 
   let template = fs
-    .readFileSync(`../templates/repositoryPullRequests.md`, 'utf8')
+    .readFileSync('./templates/repositoryPullRequests.md', 'utf8')
     .toString()
 
   return mustache.render(template, {
@@ -10846,7 +10846,7 @@ function generateRepoPullRequestReviews(c) {
   }
 
   let rowTemplate = fs
-    .readFileSync(`../templates/repositoryPullRequestReviewsRows.md`, 'utf8')
+    .readFileSync('./templates/repositoryPullRequestReviewsRows.md', 'utf8')
     .toString()
 
   // Populate the rows with the data
@@ -10867,7 +10867,7 @@ function generateRepoPullRequestReviews(c) {
   })
 
   let template = fs
-    .readFileSync(`../templates/repositoryPullRequestReviews.md`, 'utf8')
+    .readFileSync('./templates/repositoryPullRequestReviews.md', 'utf8')
     .toString()
 
   return mustache.render(template, {
@@ -11239,9 +11239,7 @@ async function run() {
       utils.generateRepoPullRequestReviews(totalStats)
 
     // Populate the main template with the generated markdown
-    let template = fs
-      .readFileSync(`../templates/template.md`, 'utf8')
-      .toString()
+    let template = fs.readFileSync('./templates/template.md', 'utf8').toString()
 
     core.info('Generated markdown for the summary issue')
 
