@@ -100,6 +100,8 @@ function generateRepoSummary(c) {
     .toString()
 
   let rows = []
+  let key
+  let value
   for ([key, value] of Object.entries(repoSummary)) {
     rows.push(
       mustache.render(rowTemplate, {

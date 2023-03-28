@@ -116,8 +116,8 @@ async function run() {
 
     // Get the GitHub.com tenant client and username
     // This is for creating the summary issue
-    octokit = github.getOctokit(githubToken)
-    username = await graphql.getAuthenticatedUser(octokit)
+    let octokit = github.getOctokit(githubToken)
+    let username = await graphql.getAuthenticatedUser(octokit)
 
     // Render the final markdown file
     let output = mustache.render(template, {
