@@ -96,7 +96,10 @@ function generateRepoSummary(c) {
   }
 
   let rowTemplate = fs
-    .readFileSync('./templates/repositorySummaryRows.md', 'utf8')
+    .readFileSync(
+      `${process.env.GITHUB_WORKSPACE}/templates/repositorySummaryRows.md`,
+      'utf8'
+    )
     .toString()
 
   let rows = []
@@ -115,7 +118,10 @@ function generateRepoSummary(c) {
   }
 
   let template = fs
-    .readFileSync('./templates/repositorySummary.md', 'utf8')
+    .readFileSync(
+      `${process.env.GITHUB_WORKSPACE}/templates/repositorySummary.md`,
+      'utf8'
+    )
     .toString()
 
   return mustache.render(template, {
@@ -137,7 +143,10 @@ function generateRepoIssues(c) {
   }
 
   let rowTemplate = fs
-    .readFileSync('./templates/repositoryIssuesRows.md', 'utf8')
+    .readFileSync(
+      `${process.env.GITHUB_WORKSPACE}/templates/repositoryIssuesRows.md`,
+      'utf8'
+    )
     .toString()
 
   // Populate the rows with the data
@@ -158,7 +167,10 @@ function generateRepoIssues(c) {
   })
 
   let template = fs
-    .readFileSync('./templates/repositoryIssues.md', 'utf8')
+    .readFileSync(
+      `${process.env.GITHUB_WORKSPACE}/templates/repositoryIssues.md`,
+      'utf8'
+    )
     .toString()
 
   return mustache.render(template, {
@@ -181,7 +193,10 @@ function generateRepoPullRequests(c) {
 
   // Get the template file
   let rowTemplate = fs
-    .readFileSync('./templates/repositoryPullRequestsRows.md', 'utf8')
+    .readFileSync(
+      `${process.env.GITHUB_WORKSPACE}/templates/repositoryPullRequestsRows.md`,
+      'utf8'
+    )
     .toString()
 
   // Populate the rows with the data
@@ -203,7 +218,10 @@ function generateRepoPullRequests(c) {
   })
 
   let template = fs
-    .readFileSync('./templates/repositoryPullRequests.md', 'utf8')
+    .readFileSync(
+      `${process.env.GITHUB_WORKSPACE}/templates/repositoryPullRequests.md`,
+      'utf8'
+    )
     .toString()
 
   return mustache.render(template, {
@@ -225,7 +243,10 @@ function generateRepoPullRequestReviews(c) {
   }
 
   let rowTemplate = fs
-    .readFileSync('./templates/repositoryPullRequestReviewsRows.md', 'utf8')
+    .readFileSync(
+      `${process.env.GITHUB_WORKSPACE}/templates/repositoryPullRequestReviewsRows.md`,
+      'utf8'
+    )
     .toString()
 
   // Populate the rows with the data
@@ -246,7 +267,10 @@ function generateRepoPullRequestReviews(c) {
   })
 
   let template = fs
-    .readFileSync('./templates/repositoryPullRequestReviews.md', 'utf8')
+    .readFileSync(
+      `${process.env.GITHUB_WORKSPACE}/templates/repositoryPullRequestReviews.md`,
+      'utf8'
+    )
     .toString()
 
   return mustache.render(template, {

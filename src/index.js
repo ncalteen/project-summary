@@ -125,7 +125,12 @@ async function run() {
       utils.generateRepoPullRequestReviews(totalStats)
 
     // Populate the main template with the generated markdown
-    let template = fs.readFileSync('./templates/template.md', 'utf8').toString()
+    let template = fs
+      .readFileSync(
+        `${process.env.GITHUB_WORKSPACE}/templates/template.md`,
+        'utf8'
+      )
+      .toString()
 
     core.info('Generated markdown for the summary issue')
 
