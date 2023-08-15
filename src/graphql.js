@@ -43,10 +43,9 @@ async function getProjectNodeId(octokit, organization, owner, projectNumber) {
   } else {
     let response = await octokit.graphql({
       query: queries.USER_PROJECT_NODE_ID,
-      owner: owner,
+      login: owner,
       projectNumber: projectNumber
     })
-    console.log(JSON.stringify(response, null, 2))
 
     return response.user.projectV2.id
   }
@@ -64,7 +63,7 @@ async function getRepositoryNodeId(octokit, organization, owner, repository) {
     owner: organization !== '' ? organization : owner,
     name: repository
   })
-  console.log(JSON.stringify(response, null, 2))
+
   return response.repository.id
 }
 
