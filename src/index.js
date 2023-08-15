@@ -26,16 +26,10 @@ async function run() {
       : 14
 
   // Organization to create the summary issue in
-  const organization =
-    core.getInput('organization') !== ''
-      ? core.getInput('organization')
-      : process.env.GITHUB_ORGANIZATION
+  const organization = core.getInput('organization')
 
   // Owner to create the summary issue in
-  const owner =
-    core.getInput('owner') !== ''
-      ? core.getInput('owner')
-      : process.env.GITHUB_OWNER
+  const owner = core.getInput('owner')
 
   // Repository to create the summary issue in
   const repository =
