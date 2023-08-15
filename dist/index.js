@@ -11197,16 +11197,12 @@ async function run() {
       : 14
 
   // Organization to create the summary issue in
-  const organization =
-    core.getInput('organization') !== ''
-      ? core.getInput('organization')
-      : process.env.GITHUB_ORGANIZATION
+  let organization = core.getInput('organization')
+  if (organization === undefined) organization = ''
 
   // Owner to create the summary issue in
-  const owner =
-    core.getInput('owner') !== ''
-      ? core.getInput('owner')
-      : process.env.GITHUB_OWNER
+  let owner = core.getInput('owner')
+  if (owner === undefined) owner = ''
 
   // Repository to create the summary issue in
   const repository =
@@ -11231,12 +11227,6 @@ async function run() {
     tokens = tokens.concat(emuTokens)
   }
 
-  if (owner !== '' && organization !== '') {
-    core.setFailed(
-      'You cannot specify both an organization and an owner. Please specify only one.'
-    )
-  }
-
   core.info('Running with the following configuration:')
   core.info(`numberOfDays: ${numberOfDays}`)
   core.info(`organization: ${organization}`)
@@ -11244,6 +11234,13 @@ async function run() {
   core.info(`repository: ${repository}`)
   core.info(`projectNumber: ${projectNumber}`)
   core.info(`startDate: ${startDate}`)
+
+  if (owner !== '' && organization !== '') {
+    core.setFailed(
+      'You cannot specify both an organization and an owner. Please specify only one.'
+    )
+    return
+  }
 
   // Set up the base stats object
   let totalStats = {
