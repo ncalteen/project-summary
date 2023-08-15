@@ -26,10 +26,14 @@ async function run() {
       : 14
 
   // Organization to create the summary issue in
-  const organization = core.getInput('organization')
+  const organization =
+    core.getInput('organization') === undefined
+      ? ''
+      : core.getInput('organization')
 
   // Owner to create the summary issue in
-  const owner = core.getInput('owner')
+  const owner =
+    core.getInput('owner') === undefined ? '' : core.getInput('owner')
 
   // Repository to create the summary issue in
   const repository =
