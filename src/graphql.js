@@ -43,7 +43,7 @@ async function getProjectNodeId(octokit, organization, owner, projectNumber) {
       query: queries.USER_PROJECT_NODE_ID,
       owner: owner,
       projectNumber: projectNumber
-    }).repository.projectV2.id
+    }).user.projectV2.id
   }
 }
 
@@ -55,7 +55,7 @@ async function getProjectNodeId(octokit, organization, owner, projectNumber) {
  */
 async function getRepositoryNodeId(octokit, organization, owner, repository) {
   return await octokit.graphql({
-    query: queries.ORG_REPOSITORY_NODE_ID,
+    query: queries.REPOSITORY_NODE_ID,
     owner: organization !== '' ? organization : owner,
     name: repository
   }).repository.id
