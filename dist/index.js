@@ -10428,11 +10428,13 @@ async function getProjectNodeId(octokit, organization, owner, projectNumber) {
   projectNumber = parseInt(projectNumber)
 
   if (organization !== '') {
-    return await octokit.graphql({
+    let response = await octokit.graphql({
       query: queries.ORG_PROJECT_NODE_ID,
       organization: organization,
       projectNumber: projectNumber
-    }).organization.projectV2.id
+    })
+
+    return response.organization.projectV2.id
   } else {
     let response = await octokit.graphql({
       query: queries.USER_PROJECT_NODE_ID,
@@ -10614,8 +10616,8 @@ const USER_PROJECT_NODE_ID = `
 
 // Get the global node ID of a repository.
 const REPOSITORY_NODE_ID = `
-  query ($owner: String!, $repository: String!) {
-    repository(owner: $owner, name: $repository) {
+  query ($owner: String!, $name: String!) {
+    repository(owner: $owner, name: $name) {
       id
     }
   }

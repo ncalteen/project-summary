@@ -100,8 +100,8 @@ const USER_PROJECT_NODE_ID = `
 
 // Get the global node ID of a repository.
 const REPOSITORY_NODE_ID = `
-  query ($owner: String!, $repository: String!) {
-    repository(owner: $owner, name: $repository) {
+  query ($owner: String!, $name: String!) {
+    repository(owner: $owner, name: $name) {
       id
     }
   }
