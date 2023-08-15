@@ -78,7 +78,7 @@ const CONTRIBUTIONS = `
 `
 
 // Get the global node ID of a project.
-const PROJECT_NODE_ID = `
+const ORG_PROJECT_NODE_ID = `
   query ($organization: String!, $projectNumber: Int!) {
     organization(login: $organization) {
       projectV2(number: $projectNumber) {
@@ -88,13 +88,21 @@ const PROJECT_NODE_ID = `
   }
 `
 
-// Get the global node ID of a repository.
-const REPOSITORY_NODE_ID = `
-  query ($organization: String!, $repository: String!) {
-    organization(login: $organization) {
-      repository(name: $repository) {
+const USER_PROJECT_NODE_ID = `
+  query ($login: String!, $projectNumber: Int!) {
+    user(login: $login) {
+      projectV2(number: $projectNumber) {
         id
       }
+    }
+  }
+`
+
+// Get the global node ID of a repository.
+const REPOSITORY_NODE_ID = `
+  query ($owner: String!, $repository: String!) {
+    repository(owner: $owner, name: $repository) {
+      id
     }
   }
 `
@@ -102,6 +110,7 @@ const REPOSITORY_NODE_ID = `
 module.exports = {
   AUTHENTICATED_USER,
   CONTRIBUTIONS,
-  PROJECT_NODE_ID,
+  ORG_PROJECT_NODE_ID,
+  USER_PROJECT_NODE_ID,
   REPOSITORY_NODE_ID
 }

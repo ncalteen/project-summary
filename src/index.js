@@ -31,6 +31,12 @@ async function run() {
       ? core.getInput('organization')
       : process.env.GITHUB_ORGANIZATION
 
+  // Owner to create the summary issue in
+  const owner =
+    core.getInput('owner') !== ''
+      ? core.getInput('owner')
+      : process.env.GITHUB_OWNER
+
   // Repository to create the summary issue in
   const repository =
     core.getInput('repository') !== ''
@@ -54,9 +60,16 @@ async function run() {
     tokens = tokens.concat(emuTokens)
   }
 
+  if (owner !== '' && organization !== '') {
+    core.setFailed(
+      'You cannot specify both an organization and an owner. Please specify only one.'
+    )
+  }
+
   core.info('Running with the following configuration:')
   core.info(`numberOfDays: ${numberOfDays}`)
   core.info(`organization: ${organization}`)
+  core.info(`owner: ${owner}`)
   core.info(`repository: ${repository}`)
   core.info(`projectNumber: ${projectNumber}`)
   core.info(`startDate: ${startDate}`)
@@ -162,6 +175,7 @@ async function run() {
     let createIssueResponse = await utils.createIssue(
       octokit,
       organization,
+      owner,
       repository,
       username,
       projectNumber,

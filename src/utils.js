@@ -225,6 +225,8 @@ function generateRepoPullRequestReviews(c) {
 /**
  * Create a GitHub issue in the specified repository.
  * @param {*} octokit The authenticated Octokit instance.
+ * @param {*} organization The organization name.
+ * @param {*} owner The repository owner.
  * @param {*} repo The repository name (owner/name format).
  * @param {*} body The generated issue body.
  * @param {*} username The GitHub username to assign the issue to.
@@ -233,6 +235,7 @@ function generateRepoPullRequestReviews(c) {
 async function createIssue(
   octokit,
   organization,
+  owner,
   repository,
   username,
   projectNumber,
@@ -247,8 +250,8 @@ async function createIssue(
 
   Promise.all([
     graphql.getUserNodeId(octokit, username),
-    graphql.getProjectNodeId(octokit, organization, projectNumber),
-    graphql.getRepositoryNodeId(octokit, organization, repository)
+    graphql.getProjectNodeId(octokit, organization, owner, projectNumber),
+    graphql.getRepositoryNodeId(octokit, organization, owner, repository)
   ]).then(async values => {
     userId = values[0]
     projectId = values[1]

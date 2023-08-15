@@ -26,37 +26,39 @@ async function getUserNodeId(octokit, username) {
 /**
  * Get the global ID of a project.
  * @param {string} organization The owner of the project.
+ * @param {string} owner The owner (user) of the project.
  * @param {number} projectNumber The number of the project.
  */
-async function getProjectNodeId(octokit, organization, projectNumber) {
-  let response
-
+async function getProjectNodeId(octokit, organization, owner, projectNumber) {
   projectNumber = parseInt(projectNumber)
 
-  response = await octokit.graphql({
-    query: queries.PROJECT_NODE_ID,
-    organization,
-    projectNumber
-  })
-
-  return response.organization.projectV2.id
+  if (organization !== '') {
+    return await octokit.graphql({
+      query: queries.ORG_PROJECT_NODE_ID,
+      organization: organization,
+      projectNumber: projectNumber
+    }).organization.projectV2.id
+  } else {
+    return await octokit.graphql({
+      query: queries.USER_PROJECT_NODE_ID,
+      owner: owner,
+      projectNumber: projectNumber
+    }).repository.projectV2.id
+  }
 }
 
 /**
  * Get the global ID of a repository.
  * @param {string} organization The owner of the repository.
+ * @param {string} owner The owner (user) of the repository.
  * @param {string} repository The name of the repository.
  */
-async function getRepositoryNodeId(octokit, organization, repository) {
-  let response
-
-  response = await octokit.graphql({
-    query: queries.REPOSITORY_NODE_ID,
-    organization,
-    repository
-  })
-
-  return response.organization.repository.id
+async function getRepositoryNodeId(octokit, organization, owner, repository) {
+  return await octokit.graphql({
+    query: queries.ORG_REPOSITORY_NODE_ID,
+    owner: organization !== '' ? organization : owner,
+    name: repository
+  }).repository.id
 }
 
 module.exports = {
