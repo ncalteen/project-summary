@@ -10452,11 +10452,13 @@ async function getProjectNodeId(octokit, organization, owner, projectNumber) {
  * @param {string} repository The name of the repository.
  */
 async function getRepositoryNodeId(octokit, organization, owner, repository) {
-  return await octokit.graphql({
+  let response = await octokit.graphql({
     query: queries.REPOSITORY_NODE_ID,
     owner: organization !== '' ? organization : owner,
     name: repository
-  }).repository.id
+  })
+  console.log(JSON.stringify(response, null, 2))
+  return response.repository.id
 }
 
 module.exports = {
