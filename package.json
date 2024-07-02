@@ -44,7 +44,7 @@
     "@octokit/plugin-rest-endpoint-methods": "^13.2.4",
     "@octokit/plugin-retry": "^7.1.1",
     "@octokit/plugin-throttling": "^9.3.0",
-    "@octokit/rest": "^20.1.1",
+    "@octokit/rest": "^21.0.0",
     "ajv": "^8.14.0",
     "jsonc": "^2.0.0",
     "mustache": "^4.2.0",
